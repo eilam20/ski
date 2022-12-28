@@ -98,7 +98,7 @@
                                                     <tr>
                                                         <td><span>
 
-                                                        <form action="{% url 'order-done' r.pk %}" method="post">
+                                                        <form action="{% url 'order-done' r.pk %}" method="post"  onClick="return confirm('בטוח לאשר את ההחזרה ל-{{ r.name }}-{{ r.phone }}?')">
                                                             {% csrf_token %}
                                                             <button class="btn btn-success" type="submit">החזירו</button>
                                                         </form>
