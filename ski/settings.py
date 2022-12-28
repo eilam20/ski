@@ -2,7 +2,6 @@ import environ
 import os
 from pathlib import Path
 from django.contrib import staticfiles
-from .prod_settings import DATABASES
 
 env = environ.Env(
     # set casting, default value
@@ -19,6 +18,8 @@ SECRET_KEY = env('SECRET_KEY', default='S#perS3crEt_007')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env('DEBUG')
+if DEBUG:
+    from .prod_settings import DATABASES
 
 # Assets Management
 ASSETS_ROOT = os.getenv('ASSETS_ROOT', '/static/assets')
