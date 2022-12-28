@@ -18,3 +18,20 @@ class OrderCreateModelForm(ModelForm):
         widgets = {
             'return_date':  DateInput(format=('%m/%d/%Y'), attrs={'class':'form-control', 'placeholder':'Select a date', 'type':'date'}),
         }
+
+class OrderUpdateModelForm(ModelForm):
+    class Meta:
+        model = Order
+        fields = ['name',
+                  'place',
+                  'phone',
+                  'return_date',
+                  'pack',
+                  'coat',
+                  'pants',
+                  'notes',
+                  'done']
+
+        widgets = {
+            'return_date':  DateInput(format=('%m/%d/%Y'), attrs={'class':'form-control', 'placeholder':'Select a date', 'type':'date'}),
+        }

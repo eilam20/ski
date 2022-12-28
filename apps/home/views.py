@@ -12,7 +12,7 @@ from django.template import loader
 from django.urls import reverse
 from django.views.generic import CreateView, UpdateView
 
-from apps.home.forms import OrderCreateModelForm
+from apps.home.forms import OrderCreateModelForm, OrderUpdateModelForm
 from apps.home.models import Order
 
 
@@ -60,7 +60,7 @@ class CreateOrder(CreateView):
 class EditOrder(UpdateView):
     model = Order
     template_name = "home/update.html"
-    form_class = OrderCreateModelForm
+    form_class = OrderUpdateModelForm
     success_url = '/'
 
 
