@@ -3,6 +3,9 @@
 from django.urls import path, re_path
 from apps.home import views
 from apps.home.views import CreateOrder, update_order_complete
+from django.views.static import serve
+
+from ski import settings
 
 urlpatterns = [
 
@@ -14,5 +17,6 @@ urlpatterns = [
 
     # Matches any html file
     re_path(r'^.*\.*', views.pages, name='pages'),
+    re_path(r'^media/(?P<path>.*)$', serve, kwargs={'document_root': settings.MEDIA_ROOT})
 
 ]

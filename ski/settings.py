@@ -2,6 +2,8 @@ import environ
 import os
 from pathlib import Path
 
+from django.contrib import staticfiles
+
 env = environ.Env(
     # set casting, default value
     DEBUG=(bool, True)
@@ -121,8 +123,11 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
 STATIC_ROOT = os.path.join(CORE_DIR, 'staticfiles')
 STATIC_URL = '/static/'
+MEDIA_URL = '/media/'
 
 # Extra places for collectstatic to find static files.
 STATICFILES_DIRS = (
     os.path.join(CORE_DIR, 'apps/static'),
 )
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'apps', 'media')
