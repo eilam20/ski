@@ -59,7 +59,7 @@ class CreateOrder(CreateView):
 
 class EditOrder(UpdateView):
     model = Order
-    template_name = "home/create.html"
+    template_name = "home/update.html"
     form_class = OrderCreateModelForm
     success_url = '/'
 

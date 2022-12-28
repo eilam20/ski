@@ -2,7 +2,7 @@
 
 from django.urls import path, re_path
 from apps.home import views
-from apps.home.views import CreateOrder, update_order_complete
+from apps.home.views import CreateOrder, update_order_complete, EditOrder
 from django.views.static import serve
 from django.conf.urls.static import static
 
@@ -13,7 +13,7 @@ urlpatterns = [
     # The home page
     path('', views.index, name='home'),
     path("create_order/", CreateOrder.as_view(), name='order-create'),
-    path("edit_order/<int:pk>", CreateOrder.as_view(), name='order-edit'),
+    path("edit_order/<int:pk>", EditOrder.as_view(), name='order-edit'),
     path("done_order/<int:pk>", update_order_complete, name='order-done'),
 
     # Matches any html file

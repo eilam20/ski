@@ -109,8 +109,8 @@
                                                             <a href="{% url 'order-edit' r.pk %}"  ><i class="feather icon-edit float-start"></i></a>
 
                                                         </td>
-                                                        <td>{{ r.phone|default_if_none:''  }}
-                                                            <a href="https://wa.me/{{  r.phone }}" target="_blank"><i class="feather icon-mail float-start"></i></a>
+                                                        <td><a href="tel:{{ r.phone  }}">{{ r.phone|default_if_none:''  }}</a>
+                                                            <a href="https://wa.me/972{{  r.phone|slice:"1:" }}" target="_blank"><i class="feather icon-mail float-start"></i></a>
 
                                                         </td>
                                                         <td>{{ r.place|default_if_none:''  }}
