@@ -18,7 +18,7 @@
                     <div class="card">
 
                         <div class="card-header">
-                            <h1>הוספה</h1>
+                            <h1>עריכת השכרה</h1>
                             <div class="card-header-right">
                                 <div class="btn-group card-option">
 
@@ -45,7 +45,18 @@
                                         {% endfor %}
                                         <button class="btn btn-primary mt-2" type="submit">המשך</button>
                                         <a class="btn btn-danger mt-2" href="/" onClick="return confirm('בטוח לחזור אחורה? השינויים לא ישמרו?')">חזרה</a>
+                                        {% if object.done == True %}
+                                            <div dir="ltr">
+                                            <span>
+                                            <form action="{% url 'order-reopen' object.pk %}" method="post"  onClick="return confirm('בטוח לבטל את ההחזרה?')">
+                                                {% csrf_token %}
+                                                <button class="btn btn-dark" type="submit">ביטול החזרה</button>
+                                            </form>
+                                            </span>
 
+
+                                            </div>
+                            {% endif %}
                             </form>
 
 

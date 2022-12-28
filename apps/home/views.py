@@ -72,3 +72,13 @@ def update_order_complete(request, pk):
     # save the changes
     instance.save()
     return redirect('/')
+
+
+def update_order_not_complete(request, pk):
+    # get the model instance
+    instance = Order.objects.get(pk=pk)
+    # update the field
+    instance.done = False
+    # save the changes
+    instance.save()
+    return redirect('/')

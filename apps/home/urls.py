@@ -2,7 +2,7 @@
 
 from django.urls import path, re_path
 from apps.home import views
-from apps.home.views import CreateOrder, update_order_complete, EditOrder
+from apps.home.views import CreateOrder, update_order_complete, EditOrder, update_order_not_complete
 from django.views.static import serve
 from django.conf.urls.static import static
 
@@ -15,6 +15,7 @@ urlpatterns = [
     path("create_order/", CreateOrder.as_view(), name='order-create'),
     path("edit_order/<int:pk>", EditOrder.as_view(), name='order-edit'),
     path("done_order/<int:pk>", update_order_complete, name='order-done'),
+    path("reopen_order/<int:pk>", update_order_not_complete, name='order-reopen'),
 
     # Matches any html file
     re_path(r'^.*\.*', views.pages, name='pages'),

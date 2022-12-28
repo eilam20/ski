@@ -98,10 +98,10 @@
                                                     <tr>
                                                         <td><span>
 
-                                                        <form action="{% url 'order-done' r.pk %}" method="post"  onClick="return confirm('בטוח לאשר את ההחזרה ל-{{ r.name }}-{{ r.phone }}?')">
-                                                            {% csrf_token %}
-                                                            <button class="btn btn-success" type="submit">החזירו</button>
-                                                        </form>
+                                                            <form action="{% url 'order-done' r.pk %}" method="post"  onClick="return confirm('בטוח לאשר את ההחזרה ל-{{ r.name }}-{{ r.phone }}?')">
+                                                                {% csrf_token %}
+                                                                <button class="btn btn-success" type="submit">החזירו</button>
+                                                            </form>
                                                         </span>
                                                         </td>
                                                         <td>{{ r.return_date|date:"d-m-Y"|default_if_none:''  }}</td>
@@ -154,8 +154,14 @@
                                                     <tr>
                                                     <td></td>
                                                         <td>{{ r.return_date|date:"d-m-Y"|default_if_none:''  }}</td>
-                                                        <td>{{r.name|default_if_none:''  }}</td>
-                                                        <td>{{ r.phone|default_if_none:''  }}
+                                                        <td>{{r.name|default_if_none:''  }}
+                                                            <a href="{% url 'order-edit' r.pk %}"  ><i class="feather icon-edit float-start"></i></a>
+
+                                                        </td>
+                                                        <td><a href="tel:{{ r.phone  }}">{{ r.phone|default_if_none:''  }}</a>
+                                                            <a href="https://wa.me/972{{  r.phone|slice:"1:" }}" target="_blank"><i class="feather icon-mail float-start"></i></a>
+
+                                                        </td>
                                                         </td>
                                                         <td>{{ r.place|default_if_none:''  }}
                                                         </td>
@@ -199,8 +205,14 @@
                                                     <tr>
                                                     <td></td>
                                                         <td>{{ r.return_date|date:"d-m-Y"|default_if_none:''  }}</td>
-                                                        <td>{{r.name|default_if_none:''  }}</td>
-                                                        <td>{{ r.phone|default_if_none:''  }}
+                                                        <td>{{r.name|default_if_none:''  }}
+                                                            <a href="{% url 'order-edit' r.pk %}"  ><i class="feather icon-edit float-start"></i></a>
+
+                                                        </td>
+                                                        <td><a href="tel:{{ r.phone  }}">{{ r.phone|default_if_none:''  }}</a>
+                                                            <a href="https://wa.me/972{{  r.phone|slice:"1:" }}" target="_blank"><i class="feather icon-mail float-start"></i></a>
+
+                                                        </td>
                                                         </td>
                                                         <td>{{ r.place|default_if_none:''  }}
                                                         </td>
