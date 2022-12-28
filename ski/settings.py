@@ -77,7 +77,7 @@ WSGI_APPLICATION = 'ski.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': 'ski_db_new',
+        'NAME': 'ski_db_prod',
     }
 }
 
