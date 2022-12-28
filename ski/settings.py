@@ -1,8 +1,8 @@
 import environ
 import os
 from pathlib import Path
-
 from django.contrib import staticfiles
+from .prod_settings import DATABASES
 
 env = environ.Env(
     # set casting, default value
@@ -74,12 +74,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'ski.wsgi.application'
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': 'ski_db_prod',
-    }
-}
+
 
 AUTH_PASSWORD_VALIDATORS = [
     {
