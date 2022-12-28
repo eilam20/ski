@@ -27,7 +27,7 @@ ASSETS_ROOT = os.getenv('ASSETS_ROOT', '/static/assets')
 ALLOWED_HOSTS = ['localhost', 'localhost:85', '127.0.0.1', env('SERVER', default='127.0.0.1'), 'eilam20.pythonanywhere'
                                                                                                '.com']
 CSRF_TRUSTED_ORIGINS = ['http://localhost:85', 'http://127.0.0.1', 'https://' + env('SERVER', default='127.0.0.1')
-    ,'eilam20.pythonanywhere.com']
+    , 'https://eilam20.pythonanywhere.com', 'http://eilam20.pythonanywhere.com']
 
 # Application definition
 
