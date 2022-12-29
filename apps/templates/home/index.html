@@ -100,7 +100,7 @@
 
                                                             <form action="{% url 'order-done' r.pk %}" method="post"  onClick="return confirm('בטוח לאשר את ההחזרה ל-{{ r.name }}-{{ r.phone }}?')">
                                                                 {% csrf_token %}
-                                                                <button class="btn btn-success" type="submit">החזירו</button>
+                                                                <button class="btn btn-success" type="submit"><i class="feather icon-check-square float-start"></i></button>
                                                             </form>
                                                         </span>
                                                         </td>
@@ -110,7 +110,8 @@
 
                                                         </td>
                                                         <td><a href="tel:{{ r.phone  }}">{{ r.phone|default_if_none:''  }}</a>
-                                                            <a href="https://wa.me/972{{  r.phone|slice:"1:" }}" target="_blank"><i class="feather icon-mail float-start"></i></a>
+                                                            <br>
+                                                            <a href="https://wa.me/972{{  r.phone|slice:"1:" }}" target="_blank"><img src="/static/assets/images/whatsapp.png" width="50" alt="" class="logo-thumb"></a>
 
                                                         </td>
                                                         <td>{{ r.place|default_if_none:''  }}
@@ -159,7 +160,8 @@
 
                                                         </td>
                                                         <td><a href="tel:{{ r.phone  }}">{{ r.phone|default_if_none:''  }}</a>
-                                                            <a href="https://wa.me/972{{  r.phone|slice:"1:" }}" target="_blank"><i class="feather icon-mail float-start"></i></a>
+                                                            <br>
+                                                            <a href="https://wa.me/972{{  r.phone|slice:"1:" }}" target="_blank"><img src="/static/assets/images/whatsapp.png" width="50" alt="" class="logo-thumb"></a>
 
                                                         </td>
                                                         </td>
@@ -210,7 +212,8 @@
 
                                                         </td>
                                                         <td><a href="tel:{{ r.phone  }}">{{ r.phone|default_if_none:''  }}</a>
-                                                            <a href="https://wa.me/972{{  r.phone|slice:"1:" }}" target="_blank"><i class="feather icon-mail float-start"></i></a>
+                                                            <br>
+                                                            <a href="https://wa.me/972{{  r.phone|slice:"1:" }}" target="_blank"><img src="/static/assets/images/whatsapp.png" width="50" alt="" class="logo-thumb"></a>
 
                                                         </td>
                                                         </td>
