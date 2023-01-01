@@ -1,7 +1,6 @@
 # -*- encoding: utf-8 -*-
 from django.db import models
 from django.contrib.auth.models import User
-from simple_history.models import HistoricalRecords
 
 
 class Order(models.Model):
@@ -15,7 +14,6 @@ class Order(models.Model):
     pants = models.IntegerField(blank=True, null=True, verbose_name="מכנסיים")
     phone = models.CharField(blank=True, null=True, max_length=10, verbose_name="טלפון")
     done = models.BooleanField(default=False, verbose_name="הוחזר")
-    history = HistoricalRecords()
 
 
 
