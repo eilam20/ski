@@ -28931,14 +28931,18 @@ body.box-layout .pcoded-navbar.theme-horizontal ~ .pcoded-header {
 
 .table thead th {
     border-bottom: 1px solid #e2e5e8;
-    font-size: 13px;
+    font-size: 18px;
     color: #222;
     background: #f6f7fb;
     text-transform: uppercase;
+    font-weight: bold;
 }
 
 .table tbody + tbody {
     border-top: 2px solid #e2e5e8;
+}
+table tbody td {
+    font-size: 16px;
 }
 
 .table.table-dark thead th {
