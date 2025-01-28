@@ -7,7 +7,7 @@ class OrderCreateModelForm(ModelForm):
     class Meta:
         model = Order
         fields = ['name',
-                  'place',
+                  'location',
                   'phone',
                   'return_date',
                   'pack',
@@ -25,7 +25,7 @@ class OrderUpdateModelForm(ModelForm):
     class Meta:
         model = Order
         fields = ['name',
-                  'place',
+                  'location',
                   'phone',
                   'return_date',
                   'pack',

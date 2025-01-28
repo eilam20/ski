@@ -19,7 +19,7 @@ from apps.home.models import Order
 @login_required(login_url="/login/")
 def index(request):
     context = {'segment': 'index', 'all_orders': Order.objects.all(), 'done_orders': Order.objects.filter(done=True),
-               'live_orders': Order.objects.filter(done=False).order_by('return_date'), 'past_orders': Order.objects.filter(done=False).filter(return_date__lt=datetime.now())}
+               'live_orders': Order.objects.filter(done=False).order_by('return_date'), 'past_orders': Order.objects.filter(done=True)}
     html_template = loader.get_template('home/index.html')
     return HttpResponse(html_template.render(context, request))
 

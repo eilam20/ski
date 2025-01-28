@@ -19,8 +19,16 @@ SECRET_KEY = env('SECRET_KEY', default='S#perS3crEt_007')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env('DEBUG')
 if DEBUG:
+    # Local database for debugging
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',  # Use SQLite for local development
+            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        }
+    }
+else:
+    # Production database settings from prod_settings.py
     from .prod_settings import DATABASES
-
 # Assets Management
 ASSETS_ROOT = os.getenv('ASSETS_ROOT', '/static/assets')
 
