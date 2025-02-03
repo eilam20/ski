@@ -203,7 +203,7 @@
                                                 </tr>
                                                 </thead>
                                                 <tbody>
-                                                {% for r in past_orders %}
+                                                {% for r in done_orders %}
                                                     <tr>
                                                     <td></td>
                                                       <td>{{ r.order_date|date:"d-m-Y"|default_if_none:''  }}</td>
