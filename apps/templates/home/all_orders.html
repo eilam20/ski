@@ -1,0 +1,55 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>רשימת הזמנות</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            direction: rtl;
+            text-align: right;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: right;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <a href="{% url 'home' %}" class="home-button">חזרה לדף הבית</a>
+
+    <h1>רשימת הזמנות</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>שם</th>
+                <th>טלפון</th>
+                <th>מיקום</th>
+                <th>תאריך החזרה</th>
+                <th>חליפות</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for order in all_orders|dictsort:"return_date" %}
+            <tr>
+                <td>{{ order.name }}</td>
+                <td>{{ order.phone }}</td>
+                <td>{{ order.get_location_display }}</td>
+                <td>{{ order.return_date|date:'d/m/Y' }}</td>
+                <td>{{ order.pack }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

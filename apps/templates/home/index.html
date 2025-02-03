@@ -33,13 +33,16 @@
                 </div>
 
                 <div class="col-md-6 col-xl-3">
+                             <a href="{% url 'all-orders' %}">
+
                     <div class="card bg-c-yellow order-card">
                         <div class="card-body">
-                            <h6 class="text-white">צריכים להחזיר</h6>
+                            <h6 class="text-white">הדפסה צריכים להחזיר</h6>
                             <h2 class="text-end text-white"><i
-                                    class="feather icon-repeat float-start"></i><span>{{ live_orders.count }}</span></h2>
+                                    class="feather icon-printer float-start"></i><span>{{ live_orders.count }}</span></h2>
                         </div>
                     </div>
+                             </a>
                 </div>
                 <div class="col-md-6 col-xl-3">
                     <div class="card bg-c-red order-card">

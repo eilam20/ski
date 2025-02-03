@@ -23,6 +23,12 @@ def index(request):
     html_template = loader.get_template('home/index.html')
     return HttpResponse(html_template.render(context, request))
 
+@login_required(login_url="/login/")
+def all_orders(request):
+    context = {'segment': 'all_orders', 'all_orders': Order.objects.filter(done=False)}
+    html_template = loader.get_template('home/all_orders.html')
+    return HttpResponse(html_template.render(context, request))
+
 
 @login_required(login_url="/login/")
 def pages(request):
