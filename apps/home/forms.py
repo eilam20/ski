@@ -11,8 +11,6 @@ class OrderCreateModelForm(ModelForm):
                   'phone',
                   'return_date',
                   'pack',
-                  'coat',
-                  'pants',
                   'notes']
 
         widgets = {
@@ -29,8 +27,6 @@ class OrderUpdateModelForm(ModelForm):
                   'phone',
                   'return_date',
                   'pack',
-                  'coat',
-                  'pants',
                   'notes',
                   'done']
 

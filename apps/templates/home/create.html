@@ -42,7 +42,7 @@
                                             {{ field.errors }}
                                             {{ field.help_text }}
                                             {% if field.name == "phone" %}
-                                                {{ field|add_attrs:"type:text,inputmode:numeric,pattern:[0-9]*,placeholder:הכנס מספר טלפון" }}
+                                                {{ field|add_attrs:"type:text,pattern:[0-9]*,placeholder:הכנס מספר טלפון" }}
                                                     {% else %}
                                                         {{ field }}
                                                 {% endif %}
