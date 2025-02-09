@@ -7,25 +7,26 @@
 {% block stylesheets %}
 <style>
     .pin-pad-container {
-        max-width: 300px;
+        max-width: 400px;  /* Increased from 300px */
         margin: 0 auto;
     }
     
     .pin-pad .row {
         display: flex;
         justify-content: space-between;
-        margin: 5px 0;
+        margin: 10px 0;  /* Increased from 5px */
     }
     
     .pinpad-btn {
-        width: 60px;
-        height: 60px;
-        margin: 5px;
-        border: 1px solid #ddd;
-        border-radius: 5px;
+        width: 80px;      /* Increased from 60px */
+        height: 80px;     /* Increased from 60px */
+        margin: 8px;      /* Increased from 5px */
+        border: 2px solid #ddd;  /* Made border more visible */
+        border-radius: 8px;      /* Increased from 5px */
         background-color: #f8f9fa;
-        font-size: 1.2rem;
+        font-size: 1.8rem;       /* Increased from 1.2rem */
         cursor: pointer;
+        font-weight: bold;       /* Added bold font */
     }
     
     .pinpad-btn:hover {
@@ -34,12 +35,12 @@
     
     #pinpad-input {
         width: 100%;
-        padding: 10px;
+        padding: 15px;          /* Increased from 10px */
         text-align: center;
-        font-size: 1.5rem;
-        border: 1px solid #ddd;
-        border-radius: 5px;
-        margin-bottom: 10px;
+        font-size: 2rem;        /* Increased from 1.5rem */
+        border: 2px solid #ddd; /* Made border more visible */
+        border-radius: 8px;     /* Increased from 5px */
+        margin-bottom: 15px;    /* Increased from 10px */
     }
     
     #delete-btn {
@@ -52,6 +53,7 @@
         color: white;
     }
 </style>
+
 {% endblock stylesheets %}
 
 {% block content %}
