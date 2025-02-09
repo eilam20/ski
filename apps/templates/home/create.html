@@ -4,7 +4,55 @@
 {% block title %} הוספה {% endblock %}
 
 <!-- Specific Page CSS goes HERE  -->
-{% block stylesheets %}{% endblock stylesheets %}
+{% block stylesheets %}
+<style>
+    .pin-pad-container {
+        max-width: 300px;
+        margin: 0 auto;
+    }
+    
+    .pin-pad .row {
+        display: flex;
+        justify-content: space-between;
+        margin: 5px 0;
+    }
+    
+    .pinpad-btn {
+        width: 60px;
+        height: 60px;
+        margin: 5px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        background-color: #f8f9fa;
+        font-size: 1.2rem;
+        cursor: pointer;
+    }
+    
+    .pinpad-btn:hover {
+        background-color: #e9ecef;
+    }
+    
+    #pinpad-input {
+        width: 100%;
+        padding: 10px;
+        text-align: center;
+        font-size: 1.5rem;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        margin-bottom: 10px;
+    }
+    
+    #delete-btn {
+        background-color: #dc3545;
+        color: white;
+    }
+    
+    #submit-btn {
+        background-color: #28a745;
+        color: white;
+    }
+</style>
+{% endblock stylesheets %}
 
 {% block content %}
 
@@ -34,24 +82,53 @@
                         </div>
                         <div class="card-body">
                             <form method="post" novalidate>
-                                        {% csrf_token %}
-
-                                        {% for field in form.visible_fields %}
-                                            <div class="row">
-                                            <b>{{ field.label_tag }}</b>
-                                            {{ field.errors }}
-                                            {{ field.help_text }}
-                                            {% if field.name == "phone" %}
-                                                {{ field|add_attrs:"type:text,pattern:[0-9]*,placeholder:הכנס מספר טלפון" }}
-                                                    {% else %}
-                                                        {{ field }}
-                                                {% endif %}
-
+                                {% csrf_token %}
+                                {% for field in form.visible_fields %}
+                                    <div class="row">
+                                        <b>{{ field.label_tag }}</b>
+                                        {{ field.errors }}
+                                        {{ field.help_text }}
+                                        {% if field.name == "phone" %}
+                                            {{ field|add_attrs:"type:tel,inputmode:numeric,pattern:[0-9]*,placeholder:הכנס מספר טלפון" }}
+                                            
+                                            <div class="pin-pad-container mt-3">
+                                                <div class="card">
+                                                    <div class="card-header">
+                                                        <input type="tel" 
+                                                            id="pinpad-input" 
+                                                            readonly />
+                                                    </div>
+                                                    <div class="pin-pad" style="direction:ltr">
+                                                        <div class="row">
+                                                            <button type="button" class="pinpad-btn" value="1">1</button>
+                                                            <button type="button" class="pinpad-btn" value="2">2</button>
+                                                            <button type="button" class="pinpad-btn" value="3">3</button>
+                                                        </div>
+                                                        <div class="row">
+                                                            <button type="button" class="pinpad-btn" value="4">4</button>
+                                                            <button type="button" class="pinpad-btn" value="5">5</button>
+                                                            <button type="button" class="pinpad-btn" value="6">6</button>
+                                                        </div>
+                                                        <div class="row">
+                                                            <button type="button" class="pinpad-btn" value="7">7</button>
+                                                            <button type="button" class="pinpad-btn" value="8">8</button>
+                                                            <button type="button" class="pinpad-btn" value="9">9</button>
+                                                        </div>
+                                                        <div class="row">
+                                                            <button type="button" class="pinpad-btn" value="del" id="delete-btn">מחק</button>
+                                                            <button type="button" class="pinpad-btn" value="0">0</button>
+                                                            <button type="button" class="pinpad-btn" value="ok" id="submit-btn">אישור</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
-                                        {% endfor %}
-                                        <button class="btn btn-primary mt-2" type="submit">המשך</button>
-                                        <a class="btn btn-danger mt-2" href="/" onClick="return confirm('בטוח לחזור אחורה? השינויים לא ישמרו?')">חזרה</a>
-
+                                        {% else %}
+                                            {{ field }}
+                                        {% endif %}
+                                    </div>
+                                {% endfor %}
+                                <button class="btn btn-primary mt-2" type="submit">המשך</button>
+                                <a class="btn btn-danger mt-2" href="/" onClick="return confirm('בטוח לחזור אחורה? השינויים לא ישמרו?')">חזרה</a>
                             </form>
 
 
@@ -68,4 +145,29 @@
 {% endblock content %}
 
 <!-- Specific Page JS goes HERE  -->
-{% block javascripts %}{% endblock javascripts %}
+{% block javascripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const pinpadInput = document.getElementById('pinpad-input');
+        const phoneInput = document.querySelector('input[name="phone"]');
+        const buttons = document.querySelectorAll('.pinpad-btn');
+        
+        buttons.forEach(button => {
+            button.addEventListener('click', function() {
+                const value = this.value;
+                
+                if (value === 'del') {
+                    pinpadInput.value = pinpadInput.value.slice(0, -1);
+                    phoneInput.value = phoneInput.value.slice(0, -1);
+                } else if (value === 'ok') {
+                    // You can add validation here if needed
+                    phoneInput.value = pinpadInput.value;
+                } else {
+                    pinpadInput.value += value;
+                    phoneInput.value += value;
+                }
+            });
+        });
+    });
+    </script>
+    {% endblock javascripts %}
