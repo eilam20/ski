@@ -112,8 +112,9 @@
                                                         </td>
                                                         <td><a href="tel:{{ r.phone  }}">{{ r.phone|default_if_none:''  }}</a>
                                                             <br>
-                                                            <a href="https://wa.me/972{{  r.phone|slice:"1:" }}" target="_blank"><img src="/static/assets/images/whatsapp.png" width="50" alt="" class="logo-thumb"></a>
-
+                                                            <a href="https://web.whatsapp.com/send?phone=972{{ r.phone|slice:'1:' }}" target="_blank">
+                                                                <img src="/static/assets/images/whatsapp.png" width="50" alt="" class="logo-thumb">
+                                                            </a>
                                                         </td>
                                                        <td>{{ r.get_location_display|default_if_none:''  }}</td>
 
