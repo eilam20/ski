@@ -56,12 +56,13 @@ if response.status_code == 200:
         SMTP_PORT = 587
         EMAIL_SENDER = "eilamelimelech@gmail.com"
         EMAIL_PASSWORD = "wpws eydb hymb nvdz"
-        EMAIL_RECEIVER = "eilamelimelech@gmail.com"
+        EMAIL_RECEIVER1 = "eilamelimelech@gmail.com"
+        EMAIL_RECEIVER2 = "s0522614095@gmail.com"
 
         # יצירת הודעת המייל
         msg = MIMEMultipart()
         msg["From"] = EMAIL_SENDER
-        msg["To"] = EMAIL_RECEIVER
+        msg["To"] = EMAIL_RECEIVER1
         msg["Subject"] = f"השכרות פעילות- {today_date}"
         msg.attach(MIMEText(html_message, "html"))
 
@@ -70,7 +71,25 @@ if response.status_code == 200:
             server = smtplib.SMTP(SMTP_SERVER, SMTP_PORT)
             server.starttls()  # הפעלת הצפנת TLS
             server.login(EMAIL_SENDER, EMAIL_PASSWORD)  # התחברות עם שם משתמש וסיסמה
-            server.sendmail(EMAIL_SENDER, EMAIL_RECEIVER, msg.as_string())  # שליחת המייל
+            server.sendmail(EMAIL_SENDER, EMAIL_RECEIVER1, msg.as_string())  # שליחת המייל
+            server.quit()
+            print("✅ האימייל נשלח בהצלחה!")
+        except Exception as e:
+            print(f"❌ שגיאה בשליחת האימייל: {e}")
+
+        # יצירת הודעת המייל
+        msg = MIMEMultipart()
+        msg["From"] = EMAIL_SENDER
+        msg["To"] = EMAIL_RECEIVER2
+        msg["Subject"] = f"השכרות פעילות- {today_date}"
+        msg.attach(MIMEText(html_message, "html"))
+
+        try:
+            # יצירת חיבור לשרת SMTP של Outlook
+            server = smtplib.SMTP(SMTP_SERVER, SMTP_PORT)
+            server.starttls()  # הפעלת הצפנת TLS
+            server.login(EMAIL_SENDER, EMAIL_PASSWORD)  # התחברות עם שם משתמש וסיסמה
+            server.sendmail(EMAIL_SENDER, EMAIL_RECEIVER2, msg.as_string())  # שליחת המייל
             server.quit()
             print("✅ האימייל נשלח בהצלחה!")
         except Exception as e:
