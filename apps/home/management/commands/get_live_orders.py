@@ -9,8 +9,6 @@ import requests
 API_URL = "https://eilam20.pythonanywhere.com/api/pending-orders/"
 
 
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "ski.settings")  # Adjust if needed
-django.setup()
 response = requests.get(API_URL)
 
 # Fetch pending orders
