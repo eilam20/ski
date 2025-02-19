@@ -1,6 +1,5 @@
 import base64
-import os
-import django
+from datetime import datetime
 from django.utils.html import format_html
 import smtplib
 from email.mime.multipart import MIMEMultipart
@@ -17,6 +16,7 @@ PASSWORD = "8213517"
 credentials = f"{USERNAME}:{PASSWORD}".encode("utf-8")
 auth_header = base64.b64encode(credentials).decode("utf-8")
 headers = {"Authorization": f"Basic {auth_header}"}
+today_date = datetime.today().strftime("%d/%m/%Y")  # Format: DD/MM/YYYY
 
 response = requests.get(API_URL, headers=headers)
 
@@ -35,7 +35,7 @@ if response.status_code == 200:
         html_message = format_html(f"""
             <html>
             <body>
-                <h2>רשימת הזמנות </h2>
+                <h2>דוח השכרות פעילות - {today_date}</h2>
                 <table border="1" cellpadding="5" cellspacing="0" style="border-collapse: collapse;">
                     <tr>
                         <th>מספר הזמנה</th>
@@ -62,7 +62,7 @@ if response.status_code == 200:
         msg = MIMEMultipart()
         msg["From"] = EMAIL_SENDER
         msg["To"] = EMAIL_RECEIVER
-        msg["Subject"] = "דוח הזמנות ממתינות"
+        msg["Subject"] = f"השכרות פעילות- {today_date}"
         msg.attach(MIMEText(html_message, "html"))
 
         try:

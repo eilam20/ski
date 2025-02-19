@@ -104,7 +104,7 @@ def get_pending_orders(request):
         # Authenticate user
         user = authenticate(username=username, password=password)
         if user:
-            pending_orders = Order.objects.filter(done=False).values("id", "name", "phone", "location", "return_date", "pack")
+            pending_orders = Order.objects.filter(done=False).order_by('return_date').values("id", "name", "phone", "location", "return_date", "pack")
             return JsonResponse(list(pending_orders), safe=False)
 
     return JsonResponse({"error": "Unauthorized"}, status=401)
