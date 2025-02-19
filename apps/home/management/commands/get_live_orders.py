@@ -5,6 +5,12 @@ import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 # Set up Django environment
+import sys
+
+backend_path = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+print(backend_path)
+sys.path.append(backend_path)
+
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "ski.settings")  # Adjust if needed
 django.setup()
 from apps.home.models import Order  # Adjust the import based on your project
