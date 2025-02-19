@@ -14,7 +14,7 @@ from django.views.generic import CreateView, UpdateView
 
 from apps.home.forms import OrderCreateModelForm, OrderUpdateModelForm
 from apps.home.models import Order
-
+from django.contrib.auth import authenticate
 
 @login_required(login_url="/login/")
 def index(request):
@@ -90,9 +90,11 @@ def update_order_not_complete(request, pk):
     return redirect('/')
 
 def get_pending_orders(request):
-    """
-    מחזיר את רשימת ההזמנות שלא הושלמו (done=False) בפורמט JSON.
-    """
-    pending_orders = Order.objects.filter(done=False).values("id", "name", "phone", "location", "return_date", "pack")
-
-    return JsonResponse(list(pending_orders), safe=False)
+    auth = request.headers.get("Authorization", "").split()
+    if len(auth) == 2 and auth[0] == "Basic":
+        username, password = auth[1].decode("base64").split(":")
+        user = authenticate(username=username, password=password)
+        if user:
+            pending_orders = Order.objects.filter(done=False).values()
+            return JsonResponse(list(pending_orders), safe=False)
+    return JsonResponse({"error": "Unauthorized"}, status=401)

@@ -7,12 +7,14 @@ from email.mime.text import MIMEText
 # Set up Django environment
 import requests
 API_URL = "https://eilam20.pythonanywhere.com/api/pending-orders/"
+from requests.auth import HTTPBasicAuth
 
 
-response = requests.get(API_URL)
+response = requests.get(API_URL, auth=HTTPBasicAuth("sharon", "8213517"))
 
 # Fetch pending orders
 if response.status_code == 200:
+    print("response-",response.json())
     pending_orders = response.json()
 
     if pending_orders:
