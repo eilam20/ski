@@ -94,11 +94,9 @@ def update_order_not_complete(request, pk):
 
 def get_pending_orders(request):
     auth_header = request.headers.get("Authorization", "")
-    print('basic start1')
 
     if auth_header.startswith("Basic "):
         # Extract and decode credentials
-        print('basic start')
         auth_encoded = auth_header.split(" ")[1]
         auth_decoded = base64.b64decode(auth_encoded).decode("utf-8")
         username, password = auth_decoded.split(":")

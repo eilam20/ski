@@ -22,7 +22,6 @@ response = requests.get(API_URL, headers=headers)
 
 # Fetch pending orders
 if response.status_code == 200:
-    print("response-",response.json())
     pending_orders = response.json()
 
     if pending_orders:
@@ -51,7 +50,6 @@ if response.status_code == 200:
             </body>
             </html>
         """)
-        print(html_message)
 
         # פרטי ה-SMTP של Outlook
         SMTP_SERVER = "smtp.gmail.com"
