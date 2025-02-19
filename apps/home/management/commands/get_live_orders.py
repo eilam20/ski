@@ -1,3 +1,4 @@
+import base64
 import os
 import django
 from django.utils.html import format_html
@@ -9,8 +10,15 @@ import requests
 API_URL = "https://eilam20.pythonanywhere.com/api/pending-orders/"
 from requests.auth import HTTPBasicAuth
 
+USERNAME = "sharon"
+PASSWORD = "8213517"
 
-response = requests.get(API_URL, auth=HTTPBasicAuth("sharon", "8213517"))
+# Encode credentials in Base64 for Basic Authentication
+credentials = f"{USERNAME}:{PASSWORD}".encode("utf-8")
+auth_header = base64.b64encode(credentials).decode("utf-8")
+headers = {"Authorization": f"Basic {auth_header}"}
+
+response = requests.get(API_URL, headers=headers)
 
 # Fetch pending orders
 if response.status_code == 200:

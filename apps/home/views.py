@@ -2,6 +2,7 @@
 """
 Copyright (c) 2019 - present AppSeed.us
 """
+import base64
 from datetime import datetime
 
 from django import template
@@ -89,12 +90,23 @@ def update_order_not_complete(request, pk):
     instance.save()
     return redirect('/')
 
+
+
 def get_pending_orders(request):
-    auth = request.headers.get("Authorization", "").split()
-    if len(auth) == 2 and auth[0] == "Basic":
-        username, password = auth[1].decode("base64").split(":")
+    auth_header = request.headers.get("Authorization", "")
+    print('basic start1')
+
+    if auth_header.startswith("Basic "):
+        # Extract and decode credentials
+        print('basic start')
+        auth_encoded = auth_header.split(" ")[1]
+        auth_decoded = base64.b64decode(auth_encoded).decode("utf-8")
+        username, password = auth_decoded.split(":")
+
+        # Authenticate user
         user = authenticate(username=username, password=password)
         if user:
-            pending_orders = Order.objects.filter(done=False).values()
+            pending_orders = Order.objects.filter(done=False).values("id", "name", "phone", "location", "return_date", "pack")
             return JsonResponse(list(pending_orders), safe=False)
+
     return JsonResponse({"error": "Unauthorized"}, status=401)
