@@ -29,12 +29,6 @@
     <a href="{% url 'home' %}" class="home-button">חזרה לדף הבית</a>
 
     <h1>רשימת הזמנות</h1>
-    <ul>
-        {%  for o in  all_orders%}
-        <li>{{ o.name }}</li>
-        {% endfor %}
-    </ul>
-
     <table>
         <thead>
             <tr>
@@ -46,13 +40,13 @@
             </tr>
         </thead>
         <tbody>
-            {% for order in all_orders|dictsort:"return_date" %}
+            {% for o in all_orders %}
             <tr>
-                <td>{{ order.name }}</td>
-                <td>{{ order.phone }}</td>
-                <td>{{ order.get_location_display }}</td>
-                <td>{{ order.return_date|date:'d/m/Y' }}</td>
-                <td>{{ order.pack }}</td>
+                <td>{{ o.name }}</td>
+                <td>{{ o.phone }}</td>
+                <td>{{ o.get_location_display }}</td>
+                <td>{{ o.return_date|date:'d/m/Y' }}</td>
+                <td>{{ o.pack }}</td>
             </tr>
             {% endfor %}
         </tbody>
