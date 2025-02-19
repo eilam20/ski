@@ -17,8 +17,9 @@ urlpatterns = [
     path("done_order/<int:pk>", update_order_complete, name='order-done'),
     path("reopen_order/<int:pk>", update_order_not_complete, name='order-reopen'),
     path("all_orders", all_orders, name='all-orders'),
+    path('api/pending-orders/', get_pending_orders, name='pending_orders'),
 
-    # Matches any html file
+                  # Matches any html file
     re_path(r'^.*\.*', views.pages, name='pages'),
     re_path(r'^media/(?P<path>.*)$', serve, kwargs={'document_root': settings.MEDIA_ROOT})
 

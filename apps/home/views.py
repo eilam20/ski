@@ -6,7 +6,7 @@ from datetime import datetime
 
 from django import template
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import redirect
 from django.template import loader
 from django.urls import reverse
@@ -88,3 +88,11 @@ def update_order_not_complete(request, pk):
     # save the changes
     instance.save()
     return redirect('/')
+
+def get_pending_orders(request):
+    """
+    מחזיר את רשימת ההזמנות שלא הושלמו (done=False) בפורמט JSON.
+    """
+    pending_orders = Order.objects.filter(done=False).values("id", "name", "phone", "location", "return_date", "pack")
+
+    return JsonResponse(list(pending_orders), safe=False)
