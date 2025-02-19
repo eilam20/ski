@@ -31,7 +31,7 @@
     <h1>רשימת הזמנות</h1>
     <ul>
         {%  for o in  all_orders%}
-        <li>{{ o }}</li>
+        <li>{{ o.name }}</li>
         {% endfor %}
     </ul>
 
