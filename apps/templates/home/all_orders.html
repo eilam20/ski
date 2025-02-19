@@ -29,7 +29,12 @@
     <a href="{% url 'home' %}" class="home-button">חזרה לדף הבית</a>
 
     <h1>רשימת הזמנות</h1>
-    {{ all_orders }}
+    <ul>
+        {%  for o in  all_orders%}
+        <li>{{ o }}</li>
+        {% endfor %}
+    </ul>
+
     <table>
         <thead>
             <tr>
