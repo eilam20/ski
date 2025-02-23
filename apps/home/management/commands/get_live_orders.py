@@ -25,8 +25,8 @@ if response.status_code == 200:
     if pending_orders:
         # Create an HTML table for the email
         table_rows = "".join([
-            f"<tr><td>{order['id']}</td><td>{order['name']}</td><td>{order['phone']}</td>"
-            f"<td>{order['location']}</td><td>{order['return_date']}</td><td>{order['pack'] or ''}</td></tr>"
+            f"<tr><td>{order['name']}</td><td>{order['phone']}</td>"
+            f"<td>{order['location']}</td><td>{order['return_date']  or ''}</td><td>{order['pack'] or ''}</td></tr>"
             for order in pending_orders
         ])
 
@@ -36,7 +36,6 @@ if response.status_code == 200:
                 <h2>דוח השכרות פעילות - {today_date}</h2>
                 <table border="1" cellpadding="5" cellspacing="0" style="border-collapse: collapse;">
                     <tr>
-                        <th>מספר הזמנה</th>
                         <th>שם</th>
                         <th>טלפון</th>
                         <th>מיקום</th>
