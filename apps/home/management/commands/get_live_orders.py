@@ -1,13 +1,11 @@
 import base64
 from datetime import datetime
-from django.utils.html import format_html
 import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
-# Set up Django environment
+
 import requests
 API_URL = "https://eilam20.pythonanywhere.com/api/pending-orders/"
-from requests.auth import HTTPBasicAuth
 
 USERNAME = "sharon"
 PASSWORD = "8213517"
@@ -32,7 +30,7 @@ if response.status_code == 200:
             for order in pending_orders
         ])
 
-        html_message = format_html(f"""
+        html_message = f"""
             <html>
             <body>
                 <h2>דוח השכרות פעילות - {today_date}</h2>
@@ -49,7 +47,7 @@ if response.status_code == 200:
                 </table>
             </body>
             </html>
-        """)
+        """
 
         # פרטי ה-SMTP של Outlook
         SMTP_SERVER = "smtp.gmail.com"
