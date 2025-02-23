@@ -16,11 +16,20 @@ from django.views.generic import CreateView, UpdateView
 from apps.home.forms import OrderCreateModelForm, OrderUpdateModelForm
 from apps.home.models import Order
 from django.contrib.auth import authenticate
+from django.db.models import Sum
 
 @login_required(login_url="/login/")
 def index(request):
-    context = {'segment': 'index', 'all_orders': Order.objects.all(), 'done_orders': Order.objects.filter(done=True),
-               'live_orders': Order.objects.filter(done=False).order_by('return_date'), 'past_orders': Order.objects.filter(done=False, return_date__lt=datetime.now())}
+    live_orders = Order.objects.filter(done=False).order_by('return_date')
+    total_pack = live_orders.aggregate(Sum('pack'))['pack__sum'] or 0
+    context = {
+        'segment': 'index',
+        'all_orders': Order.objects.all(),
+        'done_orders': Order.objects.filter(done=True),
+        'live_orders': live_orders,
+        'past_orders': Order.objects.filter(done=False, return_date__lt=datetime.now()),
+        'total_pack': total_pack
+    }
     html_template = loader.get_template('home/index.html')
     return HttpResponse(html_template.render(context, request))
 

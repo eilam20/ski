@@ -39,7 +39,7 @@
                         <div class="card-body">
                             <h6 class="text-white">הדפסה צריכים להחזיר</h6>
                             <h2 class="text-end text-white"><i
-                                    class="feather icon-printer float-start"></i><span>{{ live_orders.count }}</span></h2>
+                                    class="feather icon-printer float-start"></i><span>{{ live_orders.count }}(סה"כ חליפות: {total_pack})</span></h2>
                         </div>
                     </div>
                              </a>
@@ -243,6 +243,23 @@
                 </div>
                 <!-- Customer overview end -->
             </div>
+
+        <div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <h3>WhatsApp Web</h3>
+            </div>
+            <div class="card-body">
+                <iframe id="whatsappFrame" src="about:blank"
+                    style="width: 100%; height: 600px; border: 1px solid #ddd;">
+                </iframe>
+                <br>
+                <button class="btn btn-primary" onclick="openWhatsApp()">Open WhatsApp Web</button>
+            </div>
+        </div>
+    </div>
+</div>
             <!-- [ Main Content ] end -->
         </div>
     </div>
@@ -301,5 +318,11 @@
             }
         });
     }
+</script>
+    <script>
+function openWhatsApp() {
+    let iframe = document.getElementById("whatsappFrame");
+    iframe.src = "https://web.whatsapp.com/";
+}
 </script>
 {% endblock javascripts %}
