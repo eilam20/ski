@@ -34,7 +34,7 @@ class OrderUpdateModelForm(ModelForm):
         required=True,
         label="תאריך החזרה",
         widget=DateInput(
-            format='%d/%m/%Y',
+            format='%Y-%m-%d',
             attrs={'class': 'form-control', 'placeholder': 'בחר תאריך', 'type': 'date'}
         ),
         error_messages={'required': 'יש לבחור תאריך החזרה!'}
@@ -50,5 +50,5 @@ class OrderUpdateModelForm(ModelForm):
                   'done']
 
         widgets = {
-            'return_date':  DateInput(format=('%m/%d/%Y'), attrs={'class':'form-control', 'placeholder':'Select a date', 'type':'date'}),
+            'return_date':  DateInput(format='%Y-%m-%d', attrs={'class':'form-control', 'placeholder':'Select a date', 'type':'date'}),
         }
