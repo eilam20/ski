@@ -39,7 +39,7 @@
                         <div class="card-body">
                             <h6 class="text-white">הדפסה צריכים להחזיר</h6>
                             <h2 class="text-end text-white"><i
-                                    class="feather icon-printer float-start"></i><span>{{ live_orders.count }}(סה"כ חליפות: {{ total_pack }})</span></h2>
+                                    class="feather icon-printer float-start"></i><span>(סה"כ חליפות: {{ total_pack }}) -{{ live_orders.count }}</span></h2>
                         </div>
                     </div>
                              </a>
@@ -112,11 +112,9 @@
                                                         </td>
                                                         <td><a href="tel:{{ r.phone  }}">{{ r.phone|default_if_none:''  }}</a>
                                                             <br>
-                                                            <a href="https://wa.me/972{{  r.phone|slice:"1:" }}" target="_blank"><img src="/static/assets/images/whatsapp.png" width="50" alt="" class="logo-thumb">טלפון</a>
+                                                            <a href="https://wa.me/972{{  r.phone|slice:"1:" }}?text={% if r.location == 'נשר' %}שלום,%20זוהי%20תזכורת%20משרון%20סקי.%20זוהי%20תזכורת%20להחזרת%20החליפות%20לכתובת%20הסחלב%202%20נשר%20(כניסה%20ימנית).%20תאריך%20החזרה%20המבוקש:%20{{ r.return_date|date:"d-m-Y"|default_if_none:''|urlencode }}.%20נא%20ליצור%20קשר%20על%20מנת%20לתאם%20את%20ההחזרה,%20תודה!{% else %}שלום,%20זוהי%20תזכורת%20משרון%20סקי.%20זוהי%20תזכורת%20להחזרת%20החליפות%20לכתובת%20התמר%207%20רשפון.%20תאריך%20החזרה%20המבוקש:%20{{ r.return_date|date:"d-m-Y"|default_if_none:''|urlencode }}.%20נא%20ליצור%20קשר%20על%20מנת%20לתאם%20את%20ההחזרה,%20תודה!{% endif %}" target="_blank"><img src="/static/assets/images/whatsapp.png" width="50" alt="" class="logo-thumb"></a>
 <br>
-                                                            <a href="https://web.whatsapp.com/send?phone=972{{ r.phone|slice:'1:' }}" target="_blank">
-                                                                <img src="/static/assets/images/logo-thumb.png" width="50" alt="" class="logo-thumb">אייפד
-                                                            </a>
+                            
                                                         </td>
                                                        <td>{{ r.get_location_display|default_if_none:''  }}</td>
 
@@ -169,7 +167,7 @@
                                                         </td>
                                                         <td><a href="tel:{{ r.phone  }}">{{ r.phone|default_if_none:''  }}</a>
                                                             <br>
-                                                            <a href="https://wa.me/972{{  r.phone|slice:"1:" }}" target="_blank"><img src="/static/assets/images/whatsapp.png" width="50" alt="" class="logo-thumb"></a>
+                                                            <a href="https://wa.me/972{{  r.phone|slice:"1:" }}?text={% if r.location == 'נשר' %}שלום,%20זוהי%20תזכורת%20משרון%20סקי.%20זוהי%20תזכורת%20להחזרת%20החליפות%20לכתובת%20הסחלב%202%20נשר%20(כניסה%20ימנית).%20תאריך%20החזרה%20המבוקש:%20{{ r.return_date|date:"d-m-Y"|default_if_none:''|urlencode }}.%20נא%20ליצור%20קשר%20על%20מנת%20לתאם%20את%20ההחזרה,%20תודה!{% else %}שלום,%20זוהי%20תזכורת%20משרון%20סקי.%20זוהי%20תזכורת%20להחזרת%20החליפות%20לכתובת%20התמר%207%20רשפון.%20תאריך%20החזרה%20המבוקש:%20{{ r.return_date|date:"d-m-Y"|default_if_none:''|urlencode }}.%20נא%20ליצור%20קשר%20על%20מנת%20לתאם%20את%20ההחזרה,%20תודה!{% endif %}" target="_blank"><img src="/static/assets/images/whatsapp.png" width="50" alt="" class="logo-thumb"></a>
 
                                                         </td>
 
@@ -218,7 +216,7 @@
                                                         </td>
                                                         <td><a href="tel:{{ r.phone  }}">{{ r.phone|default_if_none:''  }}</a>
                                                             <br>
-                                                            <a href="https://wa.me/972{{  r.phone|slice:"1:" }}" target="_blank"><img src="/static/assets/images/whatsapp.png" width="50" alt="" class="logo-thumb"></a>
+                                                            <a href="https://wa.me/972{{  r.phone|slice:"1:" }}?text={% if r.location == 'נשר' %}שלום,%20זוהי%20תזכורת%20משרון%20סקי.%20זוהי%20תזכורת%20להחזרת%20החליפות%20לכתובת%20הסחלב%202%20נשר%20(כניסה%20ימנית).%20תאריך%20החזרה%20המבוקש:%20{{ r.return_date|date:"d-m-Y"|default_if_none:''|urlencode }}.%20נא%20ליצור%20קשר%20על%20מנת%20לתאם%20את%20ההחזרה,%20תודה!{% else %}שלום,%20זוהי%20תזכורת%20משרון%20סקי.%20זוהי%20תזכורת%20להחזרת%20החליפות%20לכתובת%20התמר%207%20רשפון.%20תאריך%20החזרה%20המבוקש:%20{{ r.return_date|date:"d-m-Y"|default_if_none:''|urlencode }}.%20נא%20ליצור%20קשר%20על%20מנת%20לתאם%20את%20ההחזרה,%20תודה!{% endif %}" target="_blank"><img src="/static/assets/images/whatsapp.png" width="50" alt="" class="logo-thumb"></a>
 
                                                         </td>
                                                         <td>{{ r.get_location_display|default_if_none:''  }}</td>
@@ -244,22 +242,7 @@
                 <!-- Customer overview end -->
             </div>
 
-        <div class="row">
-    <div class="col-md-12">
-        <div class="card">
-            <div class="card-header">
-                <h3>WhatsApp Web</h3>
-            </div>
-            <div class="card-body">
-                <iframe id="whatsappFrame" src="about:blank"
-                    style="width: 100%; height: 600px; border: 1px solid #ddd;">
-                </iframe>
-                <br>
-                <button class="btn btn-primary" onclick="openWhatsApp()">Open WhatsApp Web</button>
-            </div>
-        </div>
-    </div>
-</div>
+
             <!-- [ Main Content ] end -->
         </div>
     </div>
