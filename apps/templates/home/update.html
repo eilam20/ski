@@ -74,7 +74,9 @@
 <script src="/static/assets/js/order-async.js"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        initAsyncOrderForm('#order-form');
+        if (typeof initAsyncOrderForm === 'function') {
+            initAsyncOrderForm('#order-form');
+        }
     });
 </script>
 {% endblock javascripts %}

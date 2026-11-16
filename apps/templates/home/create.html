@@ -158,7 +158,6 @@
 <script src="/static/assets/js/order-async.js"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        initAsyncOrderForm('#order-form');
         const phoneInput = document.querySelector('input[name="phone"]');
         const buttons = document.querySelectorAll('.pinpad-btn');
 
@@ -177,6 +176,10 @@
 
             });
         });
+
+        if (typeof initAsyncOrderForm === 'function') {
+            initAsyncOrderForm('#order-form');
+        }
     });
     </script>
     {% endblock javascripts %}
