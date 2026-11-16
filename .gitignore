@@ -2,3 +2,6 @@ ski_db_prod
 ski/prod_settings.py
 static/
 staticfiles/
+/venv_name
+/db.sqlite3
+/db.sqlite3
