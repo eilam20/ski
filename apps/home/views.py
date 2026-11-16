@@ -26,10 +26,12 @@ def _serialize_order(order):
     return {
         "id": order.pk,
         "order_date": order.order_date.strftime("%d-%m-%Y") if order.order_date else "",
+        "order_date_iso": order.order_date.isoformat() if order.order_date else "",
         "name": order.name or "",
         "phone": order.phone or "",
         "location": order.get_location_display(),
         "return_date": order.return_date.strftime("%d-%m-%Y") if order.return_date else "",
+        "return_date_iso": order.return_date.isoformat() if order.return_date else "",
         "pack": order.pack,
         "done": order.done,
     }
@@ -50,7 +52,7 @@ def dashboard_orders_api(request):
     all_orders = list(
         Order.objects.only(
             'id', 'order_date', 'return_date', 'name', 'phone', 'location', 'pack', 'done'
-        ).order_by('return_date')
+        ).order_by('-order_date')
     )
     live_orders = [o for o in all_orders if not o.done]
     past_count = sum(1 for o in live_orders if o.return_date and o.return_date < today)
