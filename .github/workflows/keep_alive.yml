@@ -1,0 +1,30 @@
+name: Extend PythonAnywhere WebApp
+
+on:
+  schedule:
+    # מופעל כל יום ראשון ב-09:00 בבוקר
+    - cron: '0 9 * * 0'
+  # מאפשר הרצה ידנית לבדיקה
+  workflow_dispatch:
+
+jobs:
+  extend:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Extend and reload webapp
+        run: |
+          RESPONSE=$(curl -s -w "\n%{http_code}" -X POST \
+            "https://www.pythonanywhere.com/api/v0/user/eilam20/webapps/eilam20.pythonanywhere.com/reload/" \
+            -H "Authorization: Token ${{ secrets.PA_API_TOKEN }}" \
+            -H "Content-Type: application/json")
+          
+          HTTP_STATUS=$(echo "$RESPONSE" | tail -n 1)
+          BODY=$(echo "$RESPONSE" | sed '$d')
+          
+          echo "Status Code: $HTTP_STATUS"
+          echo "Response Body: $BODY"
+          
+          if [ "$HTTP_STATUS" -ne 200 ] && [ "$HTTP_STATUS" -ne 201 ]; then
+            echo "Failed to reload and extend webapp!"
+            exit 1
+          fi
