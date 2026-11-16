@@ -14,7 +14,7 @@ class OrderAsyncAndIndexTests(TestCase):
         self.client.login(username="tester", password="secret")
         self.ajax_headers = {"HTTP_X_REQUESTED_WITH": "XMLHttpRequest"}
 
-    def test_index_renders_single_order_query_counts(self):
+    def test_index_shell_and_dashboard_orders_api(self):
         Order.objects.create(
             name="דני",
             phone="0501234567",
@@ -30,12 +30,17 @@ class OrderAsyncAndIndexTests(TestCase):
             done=True,
         )
 
-        response = self.client.get(reverse("home"))
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(len(response.context["all_orders"]), 2)
-        self.assertEqual(len(response.context["live_orders"]), 1)
-        self.assertEqual(len(response.context["done_orders"]), 1)
-        self.assertEqual(response.context["total_pack"], 2)
+        page_res = self.client.get(reverse("home"))
+        self.assertEqual(page_res.status_code, 200)
+
+        api_res = self.client.get(reverse("dashboard-orders-api"))
+        self.assertEqual(api_res.status_code, 200)
+        data = api_res.json()
+        self.assertEqual(data["counts"]["all"], 2)
+        self.assertEqual(data["counts"]["live"], 1)
+        self.assertEqual(data["counts"]["past"], 0)
+        self.assertEqual(data["counts"]["total_pack"], 2)
+        self.assertEqual(len(data["orders"]), 2)
 
     def test_create_order_ajax_success(self):
         payload = {

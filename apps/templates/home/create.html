@@ -90,7 +90,7 @@
                         </div>
                         <div class="card-body">
                             <div id="form-status-alert" style="display:none;" role="alert"></div>
-                            <form id="order-form" method="post" novalidate>
+                            <form id="order-form" method="post" data-allow-add-another="true" novalidate>
                                 {% csrf_token %}
                                 {% for field in form.visible_fields %}
                                     <div class="row">

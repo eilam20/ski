@@ -25,6 +25,7 @@ def _is_ajax(request):
 def _serialize_order(order):
     return {
         "id": order.pk,
+        "order_date": order.order_date.strftime("%d-%m-%Y") if order.order_date else "",
         "name": order.name or "",
         "phone": order.phone or "",
         "location": order.get_location_display(),
@@ -36,6 +37,15 @@ def _serialize_order(order):
 
 @login_required(login_url="/login/")
 def index(request):
+    context = {
+        'segment': 'index',
+    }
+    html_template = loader.get_template('home/index.html')
+    return HttpResponse(html_template.render(context, request))
+
+
+@login_required(login_url="/login/")
+def dashboard_orders_api(request):
     today = date.today()
     all_orders = list(
         Order.objects.only(
@@ -43,20 +53,18 @@ def index(request):
         ).order_by('return_date')
     )
     live_orders = [o for o in all_orders if not o.done]
-    done_orders = [o for o in all_orders if o.done]
-    past_orders = [o for o in live_orders if o.return_date and o.return_date < today]
+    past_count = sum(1 for o in live_orders if o.return_date and o.return_date < today)
     total_pack = sum(o.pack for o in live_orders if o.pack)
 
-    context = {
-        'segment': 'index',
-        'all_orders': all_orders,
-        'done_orders': done_orders,
-        'live_orders': live_orders,
-        'past_orders': past_orders,
-        'total_pack': total_pack,
-    }
-    html_template = loader.get_template('home/index.html')
-    return HttpResponse(html_template.render(context, request))
+    return JsonResponse({
+        "counts": {
+            "all": len(all_orders),
+            "live": len(live_orders),
+            "past": past_count,
+            "total_pack": total_pack,
+        },
+        "orders": [_serialize_order(o) for o in all_orders],
+    })
 
 @login_required(login_url="/login/")
 def all_orders(request):

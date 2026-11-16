@@ -27,7 +27,7 @@
                     <div class="card bg-c-blue order-card">
                         <div class="card-body">
                             <h6 class="text-white">השכרות</h6>
-                            <h2 class="text-end text-white"><i class="feather icon-shopping-cart float-start"></i><span>{{ all_orders|length }}</span></h2>
+                            <h2 class="text-end text-white"><i class="feather icon-shopping-cart float-start"></i><span id="count-all">...</span></h2>
                         </div>
                     </div>
                 </div>
@@ -39,7 +39,7 @@
                         <div class="card-body">
                             <h6 class="text-white">הדפסה צריכים להחזיר</h6>
                             <h2 class="text-end text-white"><i
-                                    class="feather icon-printer float-start"></i><span>(סה"כ חליפות: {{ total_pack }}) -{{ live_orders|length }}</span></h2>
+                                    class="feather icon-printer float-start"></i><span>(סה"כ חליפות: <span id="count-total-pack">...</span>) -<span id="count-live">...</span></span></h2>
                         </div>
                     </div>
                              </a>
@@ -49,7 +49,7 @@
                         <div class="card-body">
                             <h6 class="text-white">לא החזירו ועבר התאריך</h6>
                             <h2 class="text-end text-white"><i
-                                    class="feather icon-award float-start"></i><span>{{ past_orders|length }}</span></h2>
+                                    class="feather icon-award float-start"></i><span id="count-past">...</span></h2>
                         </div>
                     </div>
                 </div>
@@ -100,41 +100,10 @@
                                                         <th><span>תאריך החזרה <a class="help" data-toggle="popover" title="Popover title" data-content="And here's some amazing content. It's very engaging. Right?"><i class="feather icon-help-circle f-16"></i></a></span></th>
                                                     </tr>
                                                 </thead>
-                                                <tbody>
-                                                {% for r in live_orders %}
+                                                <tbody id="tbody-live">
                                                     <tr>
-                                                        <td></td>
-                                                        <td>{{ r.order_date|date:"d-m-Y"|default_if_none:''  }}</td>
-
-                                                        <td>{{r.name|default_if_none:''  }}
-                                                            <br>
-                                                            <a href="{% url 'order-edit' r.pk %}"  ><i class="feather icon-edit float-start"></i></a>
-
-                                                        </td>
-                                                        <td><a href="tel:{{ r.phone  }}">{{ r.phone|default_if_none:''  }}</a>
-                                                            <br>
-                                                            <a href="https://wa.me/972{{  r.phone|slice:"1:" }}?text={% if r.location == 'נשר' %}שלום,%20זוהי%20תזכורת%20משרון%20סקי.%20זוהי%20תזכורת%20להחזרת%20החליפות%20לכתובת%20הסחלב%202%20נשר%20(כניסה%20ימנית).%20תאריך%20החזרה%20המבוקש:%20{{ r.return_date|date:"d-m-Y"|default_if_none:''|urlencode }}.%20נא%20ליצור%20קשר%20על%20מנת%20לתאם%20את%20ההחזרה,%20תודה!{% else %}שלום,%20זוהי%20תזכורת%20משרון%20סקי.%20זוהי%20תזכורת%20להחזרת%20החליפות%20לכתובת%20התמר%207%20רשפון.%20תאריך%20החזרה%20המבוקש:%20{{ r.return_date|date:"d-m-Y"|default_if_none:''|urlencode }}.%20נא%20ליצור%20קשר%20על%20מנת%20לתאם%20את%20ההחזרה,%20תודה!{% endif %}" target="_blank"><img src="/static/assets/images/whatsapp.png" width="50" alt="" class="logo-thumb"></a>
-<br>
-                            
-                                                        </td>
-                                                       <td>{{ r.get_location_display|default_if_none:''  }}</td>
-
-                                                        <td>{{ r.pack|default_if_none:''  }}</td>
-                                                    <td>{{ r.return_date|date:"d-m-Y"|default_if_none:''  }}
-                                                            <span>
-
-                                                            <form class="done-order-form" action="{% url 'order-done' r.pk %}" method="post" data-confirm="בטוח לאשר את ההחזרה ל-{{ r.name }}-{{ r.phone }}?">
-                                                                {% csrf_token %}
-                                                                <button class="btn btn-success" type="submit"><i class="feather icon-check-square float-start"></i></button>
-                                                            </form>
-                                                        </span>
-
-                                                        </td>
-
-
+                                                        <td colspan="7" class="text-center py-4">טוען הזמנות...</td>
                                                     </tr>
-
-                                                {% endfor %}
                                                 </tbody>
                                             </table>
                                         </div>
@@ -155,33 +124,10 @@
                                                     <th><span>תאריך החזרה <a class="help" data-toggle="popover" title="Popover title" data-content="And here's some amazing content. It's very engaging. Right?"><i class="feather icon-help-circle f-16"></i></a></span></th>
                                                 </tr>
                                                 </thead>
-                                                <tbody>
-                                                {% for r in all_orders %}
+                                                <tbody id="tbody-all">
                                                     <tr>
-                                                    <td></td>
-                                                    <td>{{ r.order_date|date:"d-m-Y"|default_if_none:''  }}</td>
-
-                                                        <td>{{r.name|default_if_none:''  }}
-                                                            <br>
-                                                            <a href="{% url 'order-edit' r.pk %}"  ><i class="feather icon-edit float-start"></i></a>
-
-                                                        </td>
-                                                        <td><a href="tel:{{ r.phone  }}">{{ r.phone|default_if_none:''  }}</a>
-                                                            <br>
-                                                            <a href="https://wa.me/972{{  r.phone|slice:"1:" }}?text={% if r.location == 'נשר' %}שלום,%20זוהי%20תזכורת%20משרון%20סקי.%20זוהי%20תזכורת%20להחזרת%20החליפות%20לכתובת%20הסחלב%202%20נשר%20(כניסה%20ימנית).%20תאריך%20החזרה%20המבוקש:%20{{ r.return_date|date:"d-m-Y"|default_if_none:''|urlencode }}.%20נא%20ליצור%20קשר%20על%20מנת%20לתאם%20את%20ההחזרה,%20תודה!{% else %}שלום,%20זוהי%20תזכורת%20משרון%20סקי.%20זוהי%20תזכורת%20להחזרת%20החליפות%20לכתובת%20התמר%207%20רשפון.%20תאריך%20החזרה%20המבוקש:%20{{ r.return_date|date:"d-m-Y"|default_if_none:''|urlencode }}.%20נא%20ליצור%20קשר%20על%20מנת%20לתאם%20את%20ההחזרה,%20תודה!{% endif %}" target="_blank"><img src="/static/assets/images/whatsapp.png" width="50" alt="" class="logo-thumb"></a>
-
-                                                        </td>
-
-
-                                                        <td>{{ r.get_location_display|default_if_none:''  }}</td>
-                                                        <td>{{ r.pack|default_if_none:''  }}</td>
-                                                          <td>{{ r.return_date|date:"d-m-Y"|default_if_none:''  }}</td>
-
-
-
+                                                        <td colspan="7" class="text-center py-4">טוען הזמנות...</td>
                                                     </tr>
-
-                                                {% endfor %}
                                                 </tbody>
                                             </table>
 
@@ -204,33 +150,10 @@
                                                     <th><span>תאריך החזרה <a class="help" data-toggle="popover" title="Popover title" data-content="And here's some amazing content. It's very engaging. Right?"><i class="feather icon-help-circle f-16"></i></a></span></th>
                                                 </tr>
                                                 </thead>
-                                                <tbody>
-                                                {% for r in done_orders %}
+                                                <tbody id="tbody-done">
                                                     <tr>
-                                                    <td></td>
-                                                      <td>{{ r.order_date|date:"d-m-Y"|default_if_none:''  }}</td>
-
-                                                        <td>{{r.name|default_if_none:''  }}
-                                                            <br>
-                                                            <a href="{% url 'order-edit' r.pk %}"  ><i class="feather icon-edit float-start"></i></a>
-
-                                                        </td>
-                                                        <td><a href="tel:{{ r.phone  }}">{{ r.phone|default_if_none:''  }}</a>
-                                                            <br>
-                                                            <a href="https://wa.me/972{{  r.phone|slice:"1:" }}?text={% if r.location == 'נשר' %}שלום,%20זוהי%20תזכורת%20משרון%20סקי.%20זוהי%20תזכורת%20להחזרת%20החליפות%20לכתובת%20הסחלב%202%20נשר%20(כניסה%20ימנית).%20תאריך%20החזרה%20המבוקש:%20{{ r.return_date|date:"d-m-Y"|default_if_none:''|urlencode }}.%20נא%20ליצור%20קשר%20על%20מנת%20לתאם%20את%20ההחזרה,%20תודה!{% else %}שלום,%20זוהי%20תזכורת%20משרון%20סקי.%20זוהי%20תזכורת%20להחזרת%20החליפות%20לכתובת%20התמר%207%20רשפון.%20תאריך%20החזרה%20המבוקש:%20{{ r.return_date|date:"d-m-Y"|default_if_none:''|urlencode }}.%20נא%20ליצור%20קשר%20על%20מנת%20לתאם%20את%20ההחזרה,%20תודה!{% endif %}" target="_blank"><img src="/static/assets/images/whatsapp.png" width="50" alt="" class="logo-thumb"></a>
-
-                                                        </td>
-                                                        <td>{{ r.get_location_display|default_if_none:''  }}</td>
-
-
-                                                        <td>{{ r.pack|default_if_none:''  }}</td>
-                                                    <td>{{ r.return_date|date:"d-m-Y"|default_if_none:''  }}</td>
-
-
-
+                                                        <td colspan="7" class="text-center py-4">טוען הזמנות...</td>
                                                     </tr>
-
-                                                {% endfor %}
                                                 </tbody>
                                             </table>
                                         </div>
@@ -255,43 +178,152 @@
 {% block javascripts %}
 
     <script>
-        document.querySelectorAll('.done-order-form').forEach(form => {
-            form.addEventListener('submit', async function (e) {
-                e.preventDefault();
-                const confirmMsg = form.dataset.confirm || 'בטוח לאשר?';
-                if (!confirm(confirmMsg)) return;
+        const DASHBOARD_API_URL = "{% url 'dashboard-orders-api' %}";
+        const CSRF_TOKEN = "{{ csrf_token }}";
 
-                const btn = form.querySelector('button[type="submit"]');
-                const alertBox = document.getElementById('dashboard-status-alert');
-                if (btn) btn.disabled = true;
+        function escapeHtml(value) {
+            return String(value ?? '')
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#39;');
+        }
 
-                try {
-                    const response = await fetch(form.action, {
-                        method: 'POST',
-                        body: new FormData(form),
-                        headers: { 'X-Requested-With': 'XMLHttpRequest' }
-                    });
-                    const data = await response.json();
-                    if (response.ok && data.success) {
-                        const row = form.closest('tr');
-                        if (row) row.remove();
-                        if (alertBox) {
-                            alertBox.className = 'alert alert-success m-3';
-                            alertBox.textContent = data.message || 'ההזמנה סומנה כהוחזרה.';
-                            alertBox.style.display = 'block';
-                        }
-                    } else {
-                        throw new Error(data.message || 'שגיאה בעדכון ההזמנה');
+        function buildWhatsAppUrl(order) {
+            const phone = String(order.phone || '').slice(1);
+            const ret = order.return_date || '';
+            const msg = order.location === 'נשר'
+                ? `שלום, זוהי תזכורת משרון סקי. זוהי תזכורת להחזרת החליפות לכתובת הסחלב 2 נשר (כניסה ימנית). תאריך החזרה המבוקש: ${ret}. נא ליצור קשר על מנת לתאם את ההחזרה, תודה!`
+                : `שלום, זוהי תזכורת משרון סקי. זוהי תזכורת להחזרת החליפות לכתובת התמר 7 רשפון. תאריך החזרה המבוקש: ${ret}. נא ליצור קשר על מנת לתאם את ההחזרה, תודה!`;
+            return `https://wa.me/972${encodeURIComponent(phone)}?text=${encodeURIComponent(msg)}`;
+        }
+
+        function buildOrderRow(order, showDoneBtn) {
+            const name = escapeHtml(order.name);
+            const phone = escapeHtml(order.phone);
+            const location = escapeHtml(order.location);
+            const pack = order.pack !== null && order.pack !== undefined ? escapeHtml(order.pack) : '';
+            const orderDate = escapeHtml(order.order_date);
+            const returnDate = escapeHtml(order.return_date);
+            const doneForm = showDoneBtn
+                ? `<span>
+                        <form class="done-order-form" action="/done_order/${order.id}" method="post" data-confirm="בטוח לאשר את ההחזרה ל-${name}-${phone}?">
+                            <input type="hidden" name="csrfmiddlewaretoken" value="${CSRF_TOKEN}">
+                            <button class="btn btn-success" type="submit"><i class="feather icon-check-square float-start"></i></button>
+                        </form>
+                   </span>`
+                : '';
+
+            return `<tr>
+                <td></td>
+                <td>${orderDate}</td>
+                <td>${name}<br><a href="/edit_order/${order.id}"><i class="feather icon-edit float-start"></i></a></td>
+                <td>
+                    <a href="tel:${phone}">${phone}</a><br>
+                    <a href="${buildWhatsAppUrl(order)}" target="_blank"><img src="/static/assets/images/whatsapp.png" width="50" alt="" class="logo-thumb"></a>
+                </td>
+                <td>${location}</td>
+                <td>${pack}</td>
+                <td>${returnDate}${doneForm}</td>
+            </tr>`;
+        }
+
+        function renderOrderTable(tbodyId, orders, showDoneBtn) {
+            const tbody = document.getElementById(tbodyId);
+            if (!tbody) return;
+            if (!orders.length) {
+                tbody.innerHTML = '<tr><td colspan="7" class="text-center py-4">אין הזמנות להצגה</td></tr>';
+                return;
+            }
+            tbody.innerHTML = orders.map(o => buildOrderRow(o, showDoneBtn)).join('');
+        }
+
+        async function loadDashboardOrders() {
+            const alertBox = document.getElementById('dashboard-status-alert');
+            const loadingRow = '<tr><td colspan="7" class="text-center py-4">טוען הזמנות...</td></tr>';
+            ['tbody-live', 'tbody-all', 'tbody-done'].forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.innerHTML = loadingRow;
+            });
+
+            try {
+                const response = await fetch(DASHBOARD_API_URL, {
+                    headers: { 'X-Requested-With': 'XMLHttpRequest' }
+                });
+                if (!response.ok) throw new Error(`שגיאה בטעינת הנתונים (${response.status})`);
+                const data = await response.json();
+
+                document.getElementById('count-all').textContent = data.counts.all;
+                document.getElementById('count-live').textContent = data.counts.live;
+                document.getElementById('count-total-pack').textContent = data.counts.total_pack;
+                document.getElementById('count-past').textContent = data.counts.past;
+
+                const allOrders = data.orders || [];
+                renderOrderTable('tbody-live', allOrders.filter(o => !o.done), true);
+                renderOrderTable('tbody-all', allOrders, false);
+                renderOrderTable('tbody-done', allOrders.filter(o => o.done), false);
+
+                if (document.getElementById('locationFilter').value !== 'all') filterByLocation();
+                if (document.getElementById('searchInput').value.trim()) searchTable();
+            } catch (err) {
+                const errRow = '<tr><td colspan="7" class="text-center text-danger py-4">שגיאה בטעינת ההזמנות</td></tr>';
+                ['tbody-live', 'tbody-all', 'tbody-done'].forEach(id => {
+                    const el = document.getElementById(id);
+                    if (el) el.innerHTML = errRow;
+                });
+                if (alertBox) {
+                    alertBox.className = 'alert alert-danger m-3';
+                    alertBox.innerHTML = `${escapeHtml(err.message)} <button type="button" class="btn btn-sm btn-outline-danger ms-2" onclick="loadDashboardOrders()">נסה שוב</button>`;
+                    alertBox.style.display = 'block';
+                }
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', loadDashboardOrders);
+
+        document.getElementById('pills-tabContent').addEventListener('submit', async function (e) {
+            const form = e.target.closest('.done-order-form');
+            if (!form) return;
+            e.preventDefault();
+
+            const confirmMsg = form.dataset.confirm || 'בטוח לאשר?';
+            if (!confirm(confirmMsg)) return;
+
+            const btn = form.querySelector('button[type="submit"]');
+            const alertBox = document.getElementById('dashboard-status-alert');
+            if (btn) btn.disabled = true;
+
+            try {
+                const response = await fetch(form.action, {
+                    method: 'POST',
+                    body: new FormData(form),
+                    headers: { 'X-Requested-With': 'XMLHttpRequest' }
+                });
+                const data = await response.json();
+                if (response.ok && data.success) {
+                    const row = form.closest('tr');
+                    if (row) row.remove();
+                    const liveCountEl = document.getElementById('count-live');
+                    if (liveCountEl && !isNaN(parseInt(liveCountEl.textContent, 10))) {
+                        liveCountEl.textContent = Math.max(0, parseInt(liveCountEl.textContent, 10) - 1);
                     }
-                } catch (err) {
-                    if (btn) btn.disabled = false;
                     if (alertBox) {
-                        alertBox.className = 'alert alert-danger m-3';
-                        alertBox.textContent = err.message || 'שגיאת תקשורת עם השרת';
+                        alertBox.className = 'alert alert-success m-3';
+                        alertBox.textContent = data.message || 'ההזמנה סומנה כהוחזרה.';
                         alertBox.style.display = 'block';
                     }
+                } else {
+                    throw new Error(data.message || 'שגיאה בעדכון ההזמנה');
                 }
-            });
+            } catch (err) {
+                if (btn) btn.disabled = false;
+                if (alertBox) {
+                    alertBox.className = 'alert alert-danger m-3';
+                    alertBox.textContent = err.message || 'שגיאת תקשורת עם השרת';
+                    alertBox.style.display = 'block';
+                }
+            }
         });
     </script>
 

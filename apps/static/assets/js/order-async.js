@@ -4,6 +4,7 @@ function initAsyncOrderForm(formSelector) {
 
     const submitBtn = form.querySelector('button[type="submit"]');
     const statusBox = document.getElementById('form-status-alert');
+    const allowAddAnother = form.dataset.allowAddAnother === 'true';
     const originalBtnText = submitBtn ? submitBtn.textContent : '';
 
     function showStatus(type, html) {
@@ -68,6 +69,34 @@ function initAsyncOrderForm(formSelector) {
                     o.phone ? `טלפון: ${o.phone}` : '',
                     o.return_date ? `החזרה: ${o.return_date}` : ''
                 ].filter(Boolean).join(' | ');
+
+                if (allowAddAnother) {
+                    showStatus(
+                        'success',
+                        `<strong>${data.message}</strong>` +
+                        (details ? `<div class="mt-1">${details}</div>` : '') +
+                        `<div class="mt-3 d-flex gap-2 flex-wrap">` +
+                        `<button type="button" id="add-another-order-btn" class="btn btn-primary btn-sm">הוסף הזמנה נוספת</button>` +
+                        `<a href="${data.redirect_url || '/'}" class="btn btn-secondary btn-sm">חזרה לדף הבית</a>` +
+                        `</div>`
+                    );
+
+                    const addAnotherBtn = document.getElementById('add-another-order-btn');
+                    if (addAnotherBtn) {
+                        addAnotherBtn.addEventListener('click', () => {
+                            form.reset();
+                            clearFieldErrors();
+                            if (statusBox) statusBox.style.display = 'none';
+                            if (submitBtn) {
+                                submitBtn.disabled = false;
+                                submitBtn.textContent = originalBtnText;
+                            }
+                            const firstInput = form.querySelector('input, select, textarea');
+                            if (firstInput) firstInput.focus();
+                        });
+                    }
+                    return;
+                }
 
                 showStatus(
                     'success',
