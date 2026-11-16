@@ -89,7 +89,8 @@
                             </div>
                         </div>
                         <div class="card-body">
-                            <form method="post" novalidate>
+                            <div id="form-status-alert" style="display:none;" role="alert"></div>
+                            <form id="order-form" method="post" novalidate>
                                 {% csrf_token %}
                                 {% for field in form.visible_fields %}
                                     <div class="row">
@@ -154,8 +155,10 @@
 
 <!-- Specific Page JS goes HERE  -->
 {% block javascripts %}
+<script src="/static/assets/js/order-async.js"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
+        initAsyncOrderForm('#order-form');
         const phoneInput = document.querySelector('input[name="phone"]');
         const buttons = document.querySelectorAll('.pinpad-btn');
 

@@ -27,7 +27,7 @@
                     <div class="card bg-c-blue order-card">
                         <div class="card-body">
                             <h6 class="text-white">השכרות</h6>
-                            <h2 class="text-end text-white"><i class="feather icon-shopping-cart float-start"></i><span>{{ all_orders.count }}</span></h2>
+                            <h2 class="text-end text-white"><i class="feather icon-shopping-cart float-start"></i><span>{{ all_orders|length }}</span></h2>
                         </div>
                     </div>
                 </div>
@@ -39,7 +39,7 @@
                         <div class="card-body">
                             <h6 class="text-white">הדפסה צריכים להחזיר</h6>
                             <h2 class="text-end text-white"><i
-                                    class="feather icon-printer float-start"></i><span>(סה"כ חליפות: {{ total_pack }}) -{{ live_orders.count }}</span></h2>
+                                    class="feather icon-printer float-start"></i><span>(סה"כ חליפות: {{ total_pack }}) -{{ live_orders|length }}</span></h2>
                         </div>
                     </div>
                              </a>
@@ -49,7 +49,7 @@
                         <div class="card-body">
                             <h6 class="text-white">לא החזירו ועבר התאריך</h6>
                             <h2 class="text-end text-white"><i
-                                    class="feather icon-award float-start"></i><span>{{ past_orders.count }}</span></h2>
+                                    class="feather icon-award float-start"></i><span>{{ past_orders|length }}</span></h2>
                         </div>
                     </div>
                 </div>
@@ -83,6 +83,7 @@
                             </ul>
                         </div>
                         <div class="card-body p-0">
+                            <div id="dashboard-status-alert" class="m-3" style="display:none;" role="alert"></div>
                             <div class="tab-content" id="pills-tabContent">
                                 <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
                                     <div class="table-responsive">
@@ -122,7 +123,7 @@
                                                     <td>{{ r.return_date|date:"d-m-Y"|default_if_none:''  }}
                                                             <span>
 
-                                                            <form action="{% url 'order-done' r.pk %}" method="post"  onClick="return confirm('בטוח לאשר את ההחזרה ל-{{ r.name }}-{{ r.phone }}?')">
+                                                            <form class="done-order-form" action="{% url 'order-done' r.pk %}" method="post" data-confirm="בטוח לאשר את ההחזרה ל-{{ r.name }}-{{ r.phone }}?">
                                                                 {% csrf_token %}
                                                                 <button class="btn btn-success" type="submit"><i class="feather icon-check-square float-start"></i></button>
                                                             </form>
@@ -253,10 +254,46 @@
 <!-- Specific Page JS goes HERE  -->
 {% block javascripts %}
 
-    <!-- Apex Chart -->
+    <script>
+        document.querySelectorAll('.done-order-form').forEach(form => {
+            form.addEventListener('submit', async function (e) {
+                e.preventDefault();
+                const confirmMsg = form.dataset.confirm || 'בטוח לאשר?';
+                if (!confirm(confirmMsg)) return;
 
-    <!-- custom-chart js -->
-    <script src="/static/assets/js/pages/dashboard-main.js"></script>
+                const btn = form.querySelector('button[type="submit"]');
+                const alertBox = document.getElementById('dashboard-status-alert');
+                if (btn) btn.disabled = true;
+
+                try {
+                    const response = await fetch(form.action, {
+                        method: 'POST',
+                        body: new FormData(form),
+                        headers: { 'X-Requested-With': 'XMLHttpRequest' }
+                    });
+                    const data = await response.json();
+                    if (response.ok && data.success) {
+                        const row = form.closest('tr');
+                        if (row) row.remove();
+                        if (alertBox) {
+                            alertBox.className = 'alert alert-success m-3';
+                            alertBox.textContent = data.message || 'ההזמנה סומנה כהוחזרה.';
+                            alertBox.style.display = 'block';
+                        }
+                    } else {
+                        throw new Error(data.message || 'שגיאה בעדכון ההזמנה');
+                    }
+                } catch (err) {
+                    if (btn) btn.disabled = false;
+                    if (alertBox) {
+                        alertBox.className = 'alert alert-danger m-3';
+                        alertBox.textContent = err.message || 'שגיאת תקשורת עם השרת';
+                        alertBox.style.display = 'block';
+                    }
+                }
+            });
+        });
+    </script>
 
     <script>
         function searchTable() {

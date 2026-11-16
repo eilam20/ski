@@ -3,12 +3,12 @@
 Copyright (c) 2019 - present AppSeed.us
 """
 import base64
-from datetime import datetime
+from datetime import date
 
 from django import template
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
-from django.shortcuts import redirect
+from django.shortcuts import get_object_or_404, redirect
 from django.template import loader
 from django.urls import reverse
 from django.views.generic import CreateView, UpdateView
@@ -16,19 +16,44 @@ from django.views.generic import CreateView, UpdateView
 from apps.home.forms import OrderCreateModelForm, OrderUpdateModelForm
 from apps.home.models import Order
 from django.contrib.auth import authenticate
-from django.db.models import Sum
+
+
+def _is_ajax(request):
+    return request.headers.get("X-Requested-With") == "XMLHttpRequest"
+
+
+def _serialize_order(order):
+    return {
+        "id": order.pk,
+        "name": order.name or "",
+        "phone": order.phone or "",
+        "location": order.get_location_display(),
+        "return_date": order.return_date.strftime("%d-%m-%Y") if order.return_date else "",
+        "pack": order.pack,
+        "done": order.done,
+    }
+
 
 @login_required(login_url="/login/")
 def index(request):
-    live_orders = Order.objects.filter(done=False).order_by('return_date')
-    total_pack = live_orders.aggregate(Sum('pack'))['pack__sum'] or 0
+    today = date.today()
+    all_orders = list(
+        Order.objects.only(
+            'id', 'order_date', 'return_date', 'name', 'phone', 'location', 'pack', 'done'
+        ).order_by('return_date')
+    )
+    live_orders = [o for o in all_orders if not o.done]
+    done_orders = [o for o in all_orders if o.done]
+    past_orders = [o for o in live_orders if o.return_date and o.return_date < today]
+    total_pack = sum(o.pack for o in live_orders if o.pack)
+
     context = {
         'segment': 'index',
-        'all_orders': Order.objects.all(),
-        'done_orders': Order.objects.filter(done=True),
+        'all_orders': all_orders,
+        'done_orders': done_orders,
         'live_orders': live_orders,
-        'past_orders': Order.objects.filter(done=False, return_date__lt=datetime.now()),
-        'total_pack': total_pack
+        'past_orders': past_orders,
+        'total_pack': total_pack,
     }
     html_template = loader.get_template('home/index.html')
     return HttpResponse(html_template.render(context, request))
@@ -66,37 +91,69 @@ def pages(request):
         return HttpResponse(html_template.render(context, request))
 
 
-class CreateOrder(CreateView):
+class AjaxFormResponseMixin:
+    success_message = "נשמר בהצלחה!"
+
+    def form_valid(self, form):
+        self.object = form.save()
+        if _is_ajax(self.request):
+            return JsonResponse({
+                "success": True,
+                "message": self.success_message,
+                "order": _serialize_order(self.object),
+                "redirect_url": str(self.get_success_url()),
+            })
+        return HttpResponseRedirect(self.get_success_url())
+
+    def form_invalid(self, form):
+        if _is_ajax(self.request):
+            return JsonResponse({
+                "success": False,
+                "message": "לא ניתן לשמור — יש לתקן את השדות המסומנים.",
+                "errors": form.errors,
+            }, status=400)
+        return super().form_invalid(form)
+
+
+class CreateOrder(AjaxFormResponseMixin, CreateView):
     model = Order
     template_name = "home/create.html"
     form_class = OrderCreateModelForm
     success_url = '/'
+    success_message = "ההזמנה נוצרה בהצלחה!"
 
 
-class EditOrder(UpdateView):
+class EditOrder(AjaxFormResponseMixin, UpdateView):
     model = Order
     template_name = "home/update.html"
     form_class = OrderUpdateModelForm
     success_url = '/'
+    success_message = "ההזמנה עודכנה בהצלחה!"
 
 
 def update_order_complete(request, pk):
-    # get the model instance
-    instance = Order.objects.get(pk=pk)
-    # update the field
+    instance = get_object_or_404(Order, pk=pk)
     instance.done = True
-    # save the changes
-    instance.save()
+    instance.save(update_fields=['done'])
+    if _is_ajax(request):
+        return JsonResponse({
+            "success": True,
+            "message": f"ההזמנה של {instance.name or ''} סומנה כהוחזרה.",
+            "order": _serialize_order(instance),
+        })
     return redirect('/')
 
 
 def update_order_not_complete(request, pk):
-    # get the model instance
-    instance = Order.objects.get(pk=pk)
-    # update the field
+    instance = get_object_or_404(Order, pk=pk)
     instance.done = False
-    # save the changes
-    instance.save()
+    instance.save(update_fields=['done'])
+    if _is_ajax(request):
+        return JsonResponse({
+            "success": True,
+            "message": f"ההזמנה של {instance.name or ''} נפתחה מחדש.",
+            "order": _serialize_order(instance),
+        })
     return redirect('/')
 
 

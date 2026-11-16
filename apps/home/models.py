@@ -10,7 +10,7 @@ class Order(models.Model):
 
 
     order_date = models.DateTimeField(auto_now_add=True)
-    return_date = models.DateField(blank=True, null=True, verbose_name="תאריך החזרה")
+    return_date = models.DateField(blank=True, null=True, db_index=True, verbose_name="תאריך החזרה")
     name = models.CharField(blank=True, null=True, max_length=255, verbose_name="שם")
     place = models.CharField(blank=True, null=True, max_length=255, verbose_name="מקום")
     notes = models.CharField(blank=True, null=True, max_length=255, verbose_name="הערות")
@@ -24,9 +24,7 @@ class Order(models.Model):
         default=LocationChoices.RASHFON,  # Set a default value if needed
         verbose_name="מיקום"
     )
-    done = models.BooleanField(default=False, verbose_name="הוחזר")
+    done = models.BooleanField(default=False, db_index=True, verbose_name="הוחזר")
 
-
-
-def __str__(self):
+    def __str__(self):
         return f'{self.name}-{self.phone}'
